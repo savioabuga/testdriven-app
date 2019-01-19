@@ -1,8 +1,11 @@
+import os
 from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-app.config.from_object("project.config.DevelopmentConfig")
+app_config = os.getenv("APP_SETTINGS")
+
+app.config.from_object(app_config)
 
 
 @app.route("/users/ping", methods=["GET"])
