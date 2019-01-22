@@ -20,7 +20,7 @@ def recreate_db():
     """recreates dbs"""
     db.drop_all()
     db.create_all()
-    db.session.commit()
+    db.session.commit()  # noqa
 
 
 if __name__ == "__main__":

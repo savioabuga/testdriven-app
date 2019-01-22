@@ -9,7 +9,7 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         db.create_all()
-        db.session.commit()
+        db.session.commit()  # noqa
 
     def tearDown(self):
         db.session.remove()
