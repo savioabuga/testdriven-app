@@ -13,7 +13,7 @@ class TestUserTestCase(BaseTestCase):
 
     def test_add_user(self):
         response = self.client.post(
-            "/users/",
+            "/users",
             data=json.dumps({"username": "savio", "email": "savio@gmail.com"}),
             content_type="application/json",
         )
@@ -28,7 +28,7 @@ class TestUserTestCase(BaseTestCase):
         """
         with self.client:
             response = self.client.post(
-                "/users/", data=json.dumps({}), content_type="application/json"
+                "/users", data=json.dumps({}), content_type="application/json"
             )
             data = json.loads(response.data.decode())
             self.assert400(response)
@@ -39,7 +39,7 @@ class TestUserTestCase(BaseTestCase):
         """Test that there should be a failure if there is a missing `email` key"""
         with self.client:
             response = self.client.post(
-                "/users/",
+                "/users",
                 data=json.dumps({"username": "savio"}),
                 content_type="application/json",
             )
@@ -52,12 +52,12 @@ class TestUserTestCase(BaseTestCase):
         """Test that there is a failure when the email is duplicate"""
         with self.client:
             self.client.post(
-                "/users/",
+                "/users",
                 data=json.dumps({"email": "savio@gmail.com", "usernmame": "savio"}),
                 context_type="application/json",
             )
             response = self.client.post(
-                "/users/",
+                "/users",
                 data=json.dumps({"email": "savio@gmail.com", "usernmame": "savio"}),
                 context_type="application/json",
             )

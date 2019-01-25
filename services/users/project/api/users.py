@@ -10,7 +10,7 @@ def ping_pong():
     return jsonify({"message": "pong!", "status": "success"})
 
 
-@users_blueprint.route("/users/", methods=["POST"])
+@users_blueprint.route("/users", methods=["POST"])
 def add_user():
     post_data = request.get_json()
     username = post_data.get("username")
