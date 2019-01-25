@@ -1,7 +1,9 @@
 import unittest
 import os
-from project import app
+from project import create_app
 from project.tests.base import BaseTestCase
+
+app = create_app()
 
 
 class TestConfigTestCase(BaseTestCase):
