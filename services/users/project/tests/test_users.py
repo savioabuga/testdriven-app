@@ -22,6 +22,50 @@ class TestUserTestCase(BaseTestCase):
         self.assertIn("savio@gmail.com was added", data["message"])
         self.assertIn("success", data["status"])
 
+    def test_add_user_invalid_json(self):
+        """
+        Missing email and username should raise Invalid data 
+        """
+        with self.client:
+            response = self.client.post(
+                "/users/", data=json.dumps({}), content_type="application/json"
+            )
+            data = json.loads(response.data.decode())
+            self.assert400(response)
+            self.assertIn("Invalid data", data["message"])
+            self.assertIn("fail", data["status"])
+
+    def test_add_user_invalid_json_keys(self):
+        """Test that there should be a failure if there is a missing `email` key"""
+        with self.client:
+            response = self.client.post(
+                "/users/",
+                data=json.dumps({"username": "savio"}),
+                content_type="application/json",
+            )
+            data = json.loads(response.data.decode())
+            self.assert400(response)
+            self.assertIn("Invalid data", data["message"])
+            self.assertIn("fail", data["status"])
+
+    def test_add_user_duplicate_email(self):
+        """Test that there is a failure when the email is duplicate"""
+        with self.client:
+            self.client.post(
+                "/users/",
+                data=json.dumps({"email": "savio@gmail.com", "usernmame": "savio"}),
+                context_type="application/json",
+            )
+            response = self.client.post(
+                "/users/",
+                data=json.dumps({"email": "savio@gmail.com", "usernmame": "savio"}),
+                context_type="application/json",
+            )
+            data = json.loads(response.data.decode())
+            self.assert400(response)
+            self.assertIn("Sorry. That email already exists", data["message"])
+            self.assertIn("fail", data["status"])
+
 
 if __name__ == "__main__":
     unittest.main()
