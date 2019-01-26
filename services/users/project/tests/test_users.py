@@ -84,6 +84,15 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("savioabuga@gmail.com", data["email"])
             self.assertIn("success", data["status"])
 
+    def test_single_user_no_id(self):
+        """Ensure error is thrown if no id provided """
+        with self.client:
+            response = self.client.get("/users/blah")
+            self.assert404(response)
+            data = json.loads(response.data.decode())
+            self.assertIn("User does not exist", data["message"])
+            self.assertIn("fail", data["status"])
+
 
 if __name__ == "__main__":
     unittest.main()
