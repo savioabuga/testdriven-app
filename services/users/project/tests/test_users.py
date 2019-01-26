@@ -1,6 +1,8 @@
 import json
 import unittest
 from project.tests.base import BaseTestCase
+from project.api.models import User
+from project import db
 
 
 class TestUserTestCase(BaseTestCase):
@@ -69,6 +71,18 @@ class TestUserTestCase(BaseTestCase):
             self.assertEqual(response.status_code, 400)
             self.assertIn("Sorry. That email already exists.", data["message"])
             self.assertIn("fail", data["status"])
+
+    def test_single_user(self):
+        user = User(username="savio", email="savioabuga@gmail.com")
+        db.session.add(user)
+        db.session.commit()
+        with self.client:
+            response = self.client.get(f"/users/{user.id}")
+            data = json.loads(response.data.decode())
+            self.assert200(response)
+            self.assertIn("savio", data["username"])
+            self.assertIn("savioabuga@gmail.com", data["email"])
+            self.assertIn("success", data["status"])
 
 
 if __name__ == "__main__":
