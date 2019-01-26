@@ -5,6 +5,13 @@ from project.api.models import User
 from project import db
 
 
+def add_user(username, email):
+    user = User(username=username, email=email)
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+
 class TestUserTestCase(BaseTestCase):
     def test_ping_pont(self):
         response = self.client.get("/users/ping")
@@ -73,15 +80,13 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("fail", data["status"])
 
     def test_single_user(self):
-        user = User(username="savio", email="savioabuga@gmail.com")
-        db.session.add(user)
-        db.session.commit()
+        user = add_user(username="savio", email="savioabuga@gmail.com")
         with self.client:
             response = self.client.get(f"/users/{user.id}")
             data = json.loads(response.data.decode())
             self.assert200(response)
-            self.assertIn("savio", data["username"])
-            self.assertIn("savioabuga@gmail.com", data["email"])
+            self.assertIn("savio", data["data"]["username"])
+            self.assertIn("savioabuga@gmail.com", data["data"]["email"])
             self.assertIn("success", data["status"])
 
     def test_single_user_no_id(self):
@@ -101,6 +106,19 @@ class TestUserTestCase(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertIn("User does not exist", data["message"])
             self.assertIn("fail", data["status"])
+
+    def test_get_all_users(self):
+        user1 = add_user(username="savio", email="savioabuga@gmail.com")
+        user2 = add_user(username="joseph", email="joseph@gmail.com")
+        with self.client:
+            response = self.client.get("/users")
+            data = json.loads(response.data.decode())
+            self.assert200(response)
+            self.assertEqual(len(data["data"]["users"]), 2)
+            self.assertEqual("savio", data["data"]["users"][0]["username"])
+            self.assertEqual("joseph", data["data"]["users"][1]["username"])
+            self.assertEqual("savioabuga@gmail.com", data["data"]["users"][0]["email"])
+            self.assertEqual("joseph@gmail.com", data["data"]["users"][1]["email"])
 
 
 if __name__ == "__main__":
