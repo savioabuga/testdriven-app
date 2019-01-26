@@ -32,7 +32,7 @@ class TestUserTestCase(BaseTestCase):
             )
             data = json.loads(response.data.decode())
             self.assert400(response)
-            self.assertIn("Invalid data", data["message"])
+            self.assertIn("Invalid payload", data["message"])
             self.assertIn("fail", data["status"])
 
     def test_add_user_invalid_json_keys(self):
@@ -45,25 +45,29 @@ class TestUserTestCase(BaseTestCase):
             )
             data = json.loads(response.data.decode())
             self.assert400(response)
-            self.assertIn("Invalid data", data["message"])
+            self.assertIn("Invalid payload", data["message"])
             self.assertIn("fail", data["status"])
 
     def test_add_user_duplicate_email(self):
-        """Test that there is a failure when the email is duplicate"""
+        """Ensure error is thrown if the email already exists."""
         with self.client:
             self.client.post(
                 "/users",
-                data=json.dumps({"email": "savio@gmail.com", "usernmame": "savio"}),
-                context_type="application/json",
+                data=json.dumps(
+                    {"username": "michael", "email": "michael@mherman.org"}
+                ),
+                content_type="application/json",
             )
             response = self.client.post(
                 "/users",
-                data=json.dumps({"email": "savio@gmail.com", "usernmame": "savio"}),
-                context_type="application/json",
+                data=json.dumps(
+                    {"username": "michael", "email": "michael@mherman.org"}
+                ),
+                content_type="application/json",
             )
             data = json.loads(response.data.decode())
-            self.assert400(response)
-            self.assertIn("Sorry. That email already exists", data["message"])
+            self.assertEqual(response.status_code, 400)
+            self.assertIn("Sorry. That email already exists.", data["message"])
             self.assertIn("fail", data["status"])
 
 
