@@ -34,10 +34,3 @@ def add_user():
         db.session.rollback()
         return jsonify(response_object), 400
 
-    # post_data = request.get_json()
-    # username = post_data.get("username")
-    # email = post_data.get("email")
-    # db.session.add(User(username=username, email=email))
-    # db.session.commit()
-    # response_object = {"message": f"{email} was added.", "status": "success"}
-    # return jsonify(response_object), 201
