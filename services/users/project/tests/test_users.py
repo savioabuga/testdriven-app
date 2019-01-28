@@ -108,8 +108,8 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("fail", data["status"])
 
     def test_get_all_users(self):
-        user1 = add_user(username="savio", email="savioabuga@gmail.com")
-        user2 = add_user(username="joseph", email="joseph@gmail.com")
+        add_user(username="savio", email="savioabuga@gmail.com")
+        add_user(username="joseph", email="joseph@gmail.com")
         with self.client:
             response = self.client.get("/users")
             data = json.loads(response.data.decode())
@@ -119,6 +119,23 @@ class TestUserTestCase(BaseTestCase):
             self.assertEqual("joseph", data["data"]["users"][1]["username"])
             self.assertEqual("savioabuga@gmail.com", data["data"]["users"][0]["email"])
             self.assertEqual("joseph@gmail.com", data["data"]["users"][1]["email"])
+
+    def test_main_no_users(self):
+        response = self.client.get("/")
+        self.assert200(response)
+        self.assertIn(b"All Users", response.data)
+        self.assertIn(b"<p>No users!</p>", response.data)
+
+    def test_main_with_users(self):
+        add_user(username="savio", email="savioabuga@gmail.com")
+        add_user(username="joseph", email="joseph@gmail.com")
+        with self.client:
+            response = self.client.get("/")
+            self.assert200(response)
+            self.assertIn(b"All Users", response.data)
+            self.assertNotIn(b"<p>No users!</p>", response.data)
+            self.assertIn(b"joseph", response.data)
+            self.assertIn(b"savio", response.data)
 
 
 if __name__ == "__main__":
