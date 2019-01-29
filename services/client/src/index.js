@@ -1,12 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+const App = () => {
+    return (
+        <section className="section">
+            <div className="cointainer">
+                <div className="columns">
+                    <div className="column is-one-third">
+                        <br/>
+                        <h1 className="title is-1">All Users
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
