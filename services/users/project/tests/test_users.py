@@ -32,9 +32,7 @@ class TestUserTestCase(BaseTestCase):
         self.assertIn("success", data["status"])
 
     def test_add_user_invalid_json(self):
-        """
-        Missing email and username should raise Invalid data 
-        """
+        """Missing email and username should raise Invalid data"""
         with self.client:
             response = self.client.post(
                 "/users", data=json.dumps({}), content_type="application/json"
