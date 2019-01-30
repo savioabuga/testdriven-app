@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import UserList from "./components/UserList";
+import AddUser from "./components/AddUser";
 
 class App extends Component {
   state = { users: [] };
@@ -29,6 +30,11 @@ class App extends Component {
             <div className="column is-one-third">
               <br />
               <h1 className="title is-1">All Users</h1>
+              <hr />
+              <br />
+              <AddUser />
+              <br />
+              <br />
               <UserList users={this.state.users} />
             </div>
           </div>
