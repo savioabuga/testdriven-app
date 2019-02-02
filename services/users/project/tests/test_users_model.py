@@ -44,6 +44,14 @@ class TestUserModel(BaseTestCase):
         )
         self.assertNotEqual(user_one.password, user_two.password)
 
+    def test_add_user(self):
+        user = add_user(username="savio1", email="savio1@gmail.com", password="samsung")
+        self.assertEqual(user.username, "savio1")
+        self.assertEqual(user.email, "savio1@gmail.com")
+        self.assertTrue(user.password)
+        self.assertTrue(user.active)
+        self.assertTrue(user.id)
+
 
 if __name__ == "__main__":
     unittest.main()
