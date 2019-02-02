@@ -16,7 +16,8 @@ class TestDevelopmentConfig(BaseTestCase):
         self.assertTrue(
             app.config["SQLALCHEMY_DATABASE_URI"] == os.environ.get("DATABASE_URL")
         )
-        self.assertTrue(app.config["DEBUG_TB_ENABLED"])  # new
+        self.assertTrue(app.config["DEBUG_TB_ENABLED"])
+        self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 4)
 
 
 class TestConfigTestCase(BaseTestCase):
@@ -31,6 +32,7 @@ class TestConfigTestCase(BaseTestCase):
             app.config["SQLALCHEMY_DATABASE_URI"], os.environ.get("DATABASE_TEST_URL")
         )
         self.assertFalse(app.config["DEBUG_TB_ENABLED"])
+        self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 4)
 
 
 class TestProductionConfig(BaseTestCase):
@@ -41,7 +43,8 @@ class TestProductionConfig(BaseTestCase):
     def test_app_is_production(self):
         self.assertTrue(app.config["SECRET_KEY"] == "my_precious")
         self.assertFalse(app.config["TESTING"])
-        self.assertFalse(app.config["DEBUG_TB_ENABLED"])  # new
+        self.assertFalse(app.config["DEBUG_TB_ENABLED"])
+        self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 13)
 
 
 if __name__ == "__main__":
