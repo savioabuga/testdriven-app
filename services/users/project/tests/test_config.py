@@ -12,7 +12,7 @@ class TestDevelopmentConfig(BaseTestCase):
         return app
 
     def test_app_is_development(self):
-        self.assertTrue(app.config["SECRET_KEY"] == "my_precious")
+        self.assertTrue(app.config["SECRET_KEY"] == os.environ.get("SECRET_KEY"))
         self.assertTrue(
             app.config["SQLALCHEMY_DATABASE_URI"] == os.environ.get("DATABASE_URL")
         )
@@ -26,7 +26,7 @@ class TestConfigTestCase(BaseTestCase):
         return app
 
     def test_app_is_testing(self):
-        self.assertEqual(app.config["SECRET_KEY"], "my_precious")
+        self.assertEqual(app.config["SECRET_KEY"], os.environ.get("SECRET_KEY"))
         self.assertTrue(app.config["TESTING"])
         self.assertEqual(
             app.config["SQLALCHEMY_DATABASE_URI"], os.environ.get("DATABASE_TEST_URL")
@@ -41,7 +41,7 @@ class TestProductionConfig(BaseTestCase):
         return app
 
     def test_app_is_production(self):
-        self.assertTrue(app.config["SECRET_KEY"] == "my_precious")
+        self.assertTrue(app.config["SECRET_KEY"] == os.environ.get("SECRET_KEY"))
         self.assertFalse(app.config["TESTING"])
         self.assertFalse(app.config["DEBUG_TB_ENABLED"])
         self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 13)
