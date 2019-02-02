@@ -18,6 +18,8 @@ class TestDevelopmentConfig(BaseTestCase):
         )
         self.assertTrue(app.config["DEBUG_TB_ENABLED"])
         self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 4)
+        self.assertEqual(app.config["TOKEN_EXPIRATION_DAYS"], 30)
+        self.assertEqual(app.config["TOKEN_EXPIRATION_SECONDS"], 0)
 
 
 class TestConfigTestCase(BaseTestCase):
@@ -33,6 +35,8 @@ class TestConfigTestCase(BaseTestCase):
         )
         self.assertFalse(app.config["DEBUG_TB_ENABLED"])
         self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 4)
+        self.assertEqual(app.config["TOKEN_EXPIRATION_DAYS"], 0)
+        self.assertEqual(app.config["TOKEN_EXPIRATION_SECONDS"], 3)
 
 
 class TestProductionConfig(BaseTestCase):
@@ -45,6 +49,8 @@ class TestProductionConfig(BaseTestCase):
         self.assertFalse(app.config["TESTING"])
         self.assertFalse(app.config["DEBUG_TB_ENABLED"])
         self.assertEqual(app.config["BCRYPT_LOG_ROUNDS"], 13)
+        self.assertEqual(app.config["TOKEN_EXPIRATION_DAYS"], 30)
+        self.assertEqual(app.config["TOKEN_EXPIRATION_SECONDS"], 0)
 
 
 if __name__ == "__main__":

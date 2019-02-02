@@ -55,7 +55,8 @@ class TestUserModel(BaseTestCase):
     def test_encode_auth_token(self):
         user = add_user(username="savio1", email="savio1@gmail.com", password="samsung")
         auth_token = user.encode_auth_token(user.id)
-        self.assertFalse(isinstance(auth_token, bytes))
+        self.assertTrue(isinstance(auth_token, bytes))
+        self.assertEqual(User.decode_auth_token(auth_token), user.id)
 
 
 if __name__ == "__main__":
