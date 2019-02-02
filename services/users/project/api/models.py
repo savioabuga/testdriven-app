@@ -1,3 +1,5 @@
+import datetime
+import jwt
 from flask import current_app
 from sqlalchemy.sql import func
 from project import db, bcrypt
@@ -26,3 +28,17 @@ class User(db.Model):
             "email": self.email,
             "active": self.active,
         }
+
+    def encode_auth_token(self, user_id):
+        try:
+            payload = {
+                "exp": datetime.datetime.utcnow()
+                + datetime.timedelta(days=0, seconds=5),
+                "ait": datetime.datetime.utcnow(),
+                "sub": user_id,
+            }
+            return jwt.encode(
+                payload, current_app.config.get("SECRET_KEY"), algorithm="HS256"
+            )
+        except Exception as e:
+            return e
