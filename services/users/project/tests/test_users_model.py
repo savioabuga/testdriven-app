@@ -9,7 +9,7 @@ from project.tests.base import BaseTestCase
 
 class TestUserModel(BaseTestCase):
     def test_add_user(self):
-        user = add_user(username="justatest", email="test@test.com")
+        user = add_user(username="justatest", email="test@test.com", password="samsung")
         self.assertTrue(user.id)
         self.assertEqual(user.username, "justatest")
         self.assertEqual(user.email, "test@test.com")
@@ -17,19 +17,32 @@ class TestUserModel(BaseTestCase):
 
     def test_adding_duplicate_username(self):
         add_user(username="justatest", email="test@test.com")
-        duplicate_user = User(username="justatest", email="test@test2.com")
+        duplicate_user = User(
+            username="justatest", email="test@test2.com", password="samsung"
+        )
         db.session.add(duplicate_user)
         self.assertRaises(IntegrityError, db.session.commit)
 
     def test_adding_duplicate_email(self):
         add_user(username="justatest", email="test@test.com")
-        duplicate_user = User(username="justatest1", email="test@test.com")
+        duplicate_user = User(
+            username="justatest1", email="test@test.com", password="samsung"
+        )
         db.session.add(duplicate_user)
         self.assertRaises(IntegrityError, db.session.commit)
 
     def test_to_jsons(self):
-        user = add_user(username="justatest", email="test@test.com")
+        user = add_user(username="justatest", email="test@test.com", password="samsung")
         self.assertTrue(isinstance(user.to_json(), dict))
+
+    def test_passwords_are_random(self):
+        user_one = add_user(
+            username="savio", email="savio@gmail.com", password="samsung"
+        )
+        user_two = add_user(
+            username="savio", email="savio@gmail.com", password="samsung"
+        )
+        self.assertNotEqual(user_one.password, user_two.password)
 
 
 if __name__ == "__main__":

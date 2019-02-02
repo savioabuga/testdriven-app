@@ -2,14 +2,8 @@ import json
 import unittest
 from project.tests.base import BaseTestCase
 from project.api.models import User
+from project.tests.utils import add_user
 from project import db
-
-
-def add_user(username, email):
-    user = User(username=username, email=email)
-    db.session.add(user)
-    db.session.commit()
-    return user
 
 
 class TestUserTestCase(BaseTestCase):
@@ -23,7 +17,9 @@ class TestUserTestCase(BaseTestCase):
     def test_add_user(self):
         response = self.client.post(
             "/users",
-            data=json.dumps({"username": "savio", "email": "savio@gmail.com"}),
+            data=json.dumps(
+                {"username": "savio", "email": "savio@gmail.com", "password": "samsung"}
+            ),
             content_type="application/json",
         )
         data = json.loads(response.data.decode())
@@ -61,14 +57,22 @@ class TestUserTestCase(BaseTestCase):
             self.client.post(
                 "/users",
                 data=json.dumps(
-                    {"username": "michael", "email": "michael@mherman.org"}
+                    {
+                        "username": "michael",
+                        "email": "michael@mherman.org",
+                        "password": "samsung",
+                    }
                 ),
                 content_type="application/json",
             )
             response = self.client.post(
                 "/users",
                 data=json.dumps(
-                    {"username": "michael", "email": "michael@mherman.org"}
+                    {
+                        "username": "michael",
+                        "email": "michael@mherman.org",
+                        "password": "samsung",
+                    }
                 ),
                 content_type="application/json",
             )
@@ -78,7 +82,9 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("fail", data["status"])
 
     def test_single_user(self):
-        user = add_user(username="savio", email="savioabuga@gmail.com")
+        user = add_user(
+            username="savio", email="savioabuga@gmail.com", password="samsung"
+        )
         with self.client:
             response = self.client.get(f"/users/{user.id}")
             data = json.loads(response.data.decode())
@@ -106,8 +112,8 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("fail", data["status"])
 
     def test_get_all_users(self):
-        add_user(username="savio", email="savioabuga@gmail.com")
-        add_user(username="joseph", email="joseph@gmail.com")
+        add_user(username="savio", email="savioabuga@gmail.com", password="samsung")
+        add_user(username="joseph", email="joseph@gmail.com", password="samsung")
         with self.client:
             response = self.client.get("/users")
             data = json.loads(response.data.decode())
@@ -125,8 +131,8 @@ class TestUserTestCase(BaseTestCase):
         self.assertIn(b"<p>No users!</p>", response.data)
 
     def test_main_with_users(self):
-        add_user(username="savio", email="savioabuga@gmail.com")
-        add_user(username="joseph", email="joseph@gmail.com")
+        add_user(username="savio", email="savioabuga@gmail.com", password="samsung")
+        add_user(username="joseph", email="joseph@gmail.com", password="samsung")
         with self.client:
             response = self.client.get("/")
             self.assert200(response)
@@ -139,7 +145,7 @@ class TestUserTestCase(BaseTestCase):
         with self.client:
             response = self.client.post(
                 "/",
-                data=dict(username="seba", email="seba@gmail.com"),
+                data=dict(username="seba", email="seba@gmail.com", password="samsung"),
                 follow_redirects=True,
             )
             self.assertIn(b"All Users", response.data)

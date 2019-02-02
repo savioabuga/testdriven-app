@@ -10,9 +10,10 @@ class User(db.Model):
     active = db.Column(db.Boolean, default=True, nullable=False)
     created = db.Column(db.DateTime, default=func.now(), nullable=False)
 
-    def __init__(self, username, email):
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
+        self.password = password
 
     def to_json(self):
         return {
