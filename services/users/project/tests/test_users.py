@@ -43,7 +43,7 @@ class TestUserTestCase(BaseTestCase):
         with self.client:
             response = self.client.post(
                 "/users",
-                data=json.dumps({"username": "savio"}),
+                data=json.dumps({"username": "savio", "password": "test"}),
                 content_type="application/json",
             )
             data = json.loads(response.data.decode())
@@ -151,6 +151,19 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn(b"All Users", response.data)
             self.assertNotIn(b"<p>No users!</p>", response.data)
             self.assertIn(b"seba", response.data)
+
+    def test_add_user_invalid_json_keys_no_password(self):
+        """Ensure that error is thrown if there is no password in JSON key"""
+        with self.client:
+            response = self.client.post(
+                "/users",
+                data=json.dumps({"username": "savio", "email": "savio@andel.com"}),
+                content_type="application/json",
+            )
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 400)
+            self.assertIn("Invalid payload", data["message"])
+            self.assertIn("fail", data["status"])
 
 
 if __name__ == "__main__":
