@@ -115,7 +115,7 @@ class TestAuthBlueprint(BaseTestCase):
             add_user("test", "test@gmail.com", "password")
             response = self.client.post(
                 "/auth/login",
-                data={"username": "test", "password": "test@gmail.com"},
+                data=json.dumps({"password": "password", "email": "test@gmail.com"}),
                 content_type="application/json",
             )
             data = json.loads(response.data.decode())
