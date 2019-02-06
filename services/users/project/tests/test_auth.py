@@ -1,5 +1,5 @@
 import json
-import time
+from flask import current_app
 from project import db
 from project.api.models import User
 from project.tests.base import BaseTestCase
@@ -140,48 +140,80 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 404)
 
     def test_valid_logout(self):
-        add_user('test', 'test@test.com', 'password')
+        add_user("test", "test@test.com", "password")
         with self.client:
             response_login = self.client.post(
                 "/auth/login",
-                json.dumps({"email": "test@test.com", "password": "password"}),
+                data=json.dumps({"email": "test@test.com", "password": "password"}),
                 content_type="application/json",
             )
 
             token = json.loads(response_login.data.decode())["auth_token"]
-            response_logout = self.client.post({"/auth/logout", headers: {'Authorization': f'Bearer {token}'}})
+            response_logout = self.client.get(
+                "/auth/logout", headers={"Authorization": f"Bearer {token}"}
+            )
             data = json.loads(response_logout.data.decode())
-            self.assertEqual(data['status'], 'success')
-            self.assertEqual(data['message'], 'Successfully logged out.')
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(data["status"], "success")
+            self.assertEqual(data["message"], "Successfully logged out.")
+            self.assertEqual(response_logout.status_code, 200)
 
     def test_invalid_logout_expired_token(self):
-        add_user('test', 'test@test.com', 'password')
+        add_user("test", "test@test.com", "password")
+        current_app.config["TOKEN_EXPIRATION_SECONDS"] = -1
         with self.client:
             response_login = self.client.post(
                 "/auth/login",
-                json.dumps({"email": "test@test.com", "password": "password"}),
+                data=json.dumps({"email": "test@test.com", "password": "password"}),
                 content_type="application/json",
             )
-            time.sleep(4)
             token = json.loads(response_login.data.decode())["auth_token"]
-            response_logout = self.client.post({"/auth/logout", headers: {'Authorization': f'Bearer {token}'}})
+            response_logout = self.client.get(
+                "/auth/logout", headers={"Authorization": f"Bearer {token}"}
+            )
             data = json.loads(response_logout.data.decode())
-            self.assertEqual(data['status'], 'fail')
-            self.assertEqual(data['message'], 'Signature expired. Please log in again.')
-            self.assertEqual(response.status_code, 401)
+            self.assertEqual(data["status"], "fail")
+            self.assertEqual(data["message"], "Signature expired. Try to login again.")
+            self.assertEqual(response_logout.status_code, 401)
 
     def test_invalid_logout(self):
         with self.client:
             response = self.client.get(
-                '/auth/logout',
-                headers={'Authorization': 'Bearer invalid'})
+                "/auth/logout", headers={"Authorization": "Bearer invalid"}
+            )
             data = json.loads(response.data.decode())
-            self.assertTrue(data['status'] == 'fail')
-            self.assertTrue(
-                data['message'] == 'Invalid token. Please log in again.')
+            self.assertTrue(data["status"] == "fail")
+            self.assertTrue(data["message"] == "Invalid Token. Please login  again.")
             self.assertEqual(response.status_code, 401)
 
+    def test_user_status(self):
+        add_user("test", "test@test.com", "test")
+        with self.client:
+            resp_login = self.client.post(
+                "/auth/login",
+                data=json.dumps({"email": "test@test.com", "password": "test"}),
+                content_type="application/json",
+            )
+            token = json.loads(resp_login.data.decode())["auth_token"]
+            response = self.client.get(
+                "/auth/status", headers={"Authorization": f"Bearer {token}"}
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data["status"] == "success")
+            self.assertTrue(data["data"] is not None)
+            self.assertTrue(data["data"]["username"] == "test")
+            self.assertTrue(data["data"]["email"] == "test@test.com")
+            self.assertTrue(data["data"]["active"] is True)
+            self.assertEqual(response.status_code, 200)
+
+    def test_invalid_status(self):
+        with self.client:
+            response = self.client.get(
+                "/auth/status", headers={"Authorization": "Bearer invalid"}
+            )
+            data = json.loads(response.data.decode())
+            self.assertTrue(data["status"] == "fail")
+            self.assertTrue(data["message"] == "Invalid Token. Please login  again.")
+            self.assertEqual(response.status_code, 401)
 
 
 if __name__ == "__main__":
