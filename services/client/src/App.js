@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Switch, Route } from "react-router-dom";
 import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
 import About from "./components/About";
@@ -56,20 +57,31 @@ class App extends Component {
       <section className="section">
         <div className="cointainer">
           <div className="columns">
-            <div className="column is-one-third">
+            <div className="column is-half">
               <br />
-              <h1 className="title is-1">All Users</h1>
-              <hr />
-              <br />
-              <AddUser
-                username={this.state.username}
-                email={this.state.email}
-                addUser={this.addUser}
-                handleChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <UserList users={this.state.users} />
+              <Switch>
+                <Route
+                  exact
+                  path="/"
+                  render={() => (
+                    <div>
+                      <h1 className="title is-1">All Users</h1>
+                      <hr />
+                      <br />
+                      <AddUser
+                        username={this.state.username}
+                        email={this.state.email}
+                        addUser={this.addUser}
+                        handleChange={this.handleChange}
+                      />
+                      <br />
+                      <br />
+                      <UserList users={this.state.users} />
+                    </div>
+                  )}
+                />
+                <Route exact path="/about" component={About} />
+              </Switch>
               <br />
               <About />
             </div>
