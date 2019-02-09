@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
 import About from "./components/About";
+import Navbar from "./components/Navbar";
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class App extends Component {
     this.addUser = this.addUser.bind(this);
   }
 
-  state = { users: [], username: "", email: "" };
+  state = { users: [], username: "", email: "", title: "Testdriven.io" };
 
   componentDidMount() {
     this.getUsers();
@@ -54,40 +55,41 @@ class App extends Component {
 
   render() {
     return (
-      <section className="section">
-        <div className="cointainer">
-          <div className="columns">
-            <div className="column is-half">
-              <br />
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  render={() => (
-                    <div>
-                      <h1 className="title is-1">All Users</h1>
-                      <hr />
-                      <br />
-                      <AddUser
-                        username={this.state.username}
-                        email={this.state.email}
-                        addUser={this.addUser}
-                        handleChange={this.handleChange}
-                      />
-                      <br />
-                      <br />
-                      <UserList users={this.state.users} />
-                    </div>
-                  )}
-                />
-                <Route exact path="/about" component={About} />
-              </Switch>
-              <br />
-              <About />
+      <div>
+        <Navbar title={this.state.title} />
+        <section className="section">
+          <div className="cointainer">
+            <div className="columns">
+              <div className="column is-half">
+                <br />
+                <Switch>
+                  <Route
+                    exact
+                    path="/"
+                    render={() => (
+                      <div>
+                        <h1 className="title is-1">All Users</h1>
+                        <hr />
+                        <br />
+                        <AddUser
+                          username={this.state.username}
+                          email={this.state.email}
+                          addUser={this.addUser}
+                          handleChange={this.handleChange}
+                        />
+                        <br />
+                        <br />
+                        <UserList users={this.state.users} />
+                      </div>
+                    )}
+                  />
+                  <Route exact path="/about" component={About} />
+                </Switch>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     );
   }
 }
