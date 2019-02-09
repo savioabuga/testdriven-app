@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
+import About from "./components/About";
 
 class App extends Component {
   constructor(props) {
@@ -69,6 +70,8 @@ class App extends Component {
               <br />
               <br />
               <UserList users={this.state.users} />
+              <br />
+              <About />
             </div>
           </div>
         </div>
