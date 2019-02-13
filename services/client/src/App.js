@@ -118,7 +118,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar title={this.state.title} />
+        <Navbar
+          title={this.state.title}
+          isAuthenticated={this.state.isAuthenticated}
+        />
         <section className="section">
           <div className="cointainer">
             <div className="columns">
