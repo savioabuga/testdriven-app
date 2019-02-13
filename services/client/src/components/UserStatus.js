@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class UserStatus extends Component {
   constructor(props) {
@@ -11,7 +12,9 @@ class UserStatus extends Component {
     };
   }
   componentDidMount() {
-    this.getUserStatus();
+    if (this.props.isAuthenticated) {
+      this.getUserStatus();
+    }
   }
 
   getUserStatus(e) {
@@ -35,6 +38,14 @@ class UserStatus extends Component {
   }
 
   render() {
+    if (!this.props.isAuthenticated) {
+      return (
+        <p>
+          You must be logged in to view this. Click{" "}
+          <Link to="/login">here</Link> to go back in
+        </p>
+      );
+    }
     return (
       <div>
         <ul>
