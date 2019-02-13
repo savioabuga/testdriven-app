@@ -7,6 +7,7 @@ import About from "./components/About";
 import Navbar from "./components/Navbar";
 import Form from "./components/Form";
 import Logout from "./components/Logout";
+import UserStatus from "./components/UserStatus";
 
 class App extends Component {
   constructor(props) {
@@ -181,6 +182,7 @@ class App extends Component {
                       />
                     )}
                   />
+                  <Route exact path="/status" component={UserStatus} />
                 </Switch>
               </div>
             </div>
