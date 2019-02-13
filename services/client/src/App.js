@@ -32,7 +32,10 @@ class App extends Component {
     axios
       .post(url, data)
       .then(res => {
-        console.log(res.data);
+        this.clearFormState();
+        window.localStorage.setItem("authToken", res.data.auth_token);
+        this.setState({ isAuthenticated: true });
+        this.getUsers();
       })
       .catch(err => {
         console.log(err);
@@ -45,6 +48,14 @@ class App extends Component {
     this.setState(obj);
   }
 
+  clearFormState() {
+    this.setState({
+      formData: { username: "", email: "", password: "" },
+      username: "",
+      email: ""
+    });
+  }
+
   state = {
     users: [],
     username: "",
@@ -54,7 +65,8 @@ class App extends Component {
       username: "",
       email: "",
       password: ""
-    }
+    },
+    isAuthenticated: false
   };
 
   componentDidMount() {
@@ -135,6 +147,7 @@ class App extends Component {
                         formData={this.state.formData}
                         handleUserFormSubmit={this.handleUserFormSubmit}
                         handleFormChange={this.handleFormChange}
+                        isAuthenticated={this.state.isAuthenticated}
                       />
                     )}
                   />
@@ -147,6 +160,7 @@ class App extends Component {
                         formData={this.state.formData}
                         handleUserFormSubmit={this.handleUserFormSubmit}
                         handleFormChange={this.handleFormChange}
+                        isAuthenticated={this.state.isAuthenticated}
                       />
                     )}
                   />
