@@ -16,6 +16,7 @@ const Form = props => {
               type="text"
               name="username"
               placeholder="Enter a username"
+              className="input is-medium"
               required
               value={props.formData.username}
               onChange={props.handleFormChange}
@@ -37,7 +38,7 @@ const Form = props => {
             type="password"
             name="password"
             className="input is-medium"
-            placeholder="Enter an email address"
+            placeholder="Password"
             value={props.formData.password}
             onChange={props.handleFormChange}
           />

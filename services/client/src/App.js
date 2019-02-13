@@ -12,6 +12,12 @@ class App extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
+  }
+
+  handleUserFormSubmit(e) {
+    e.preventDefault();
+    console.log("sanity check....");
   }
 
   state = {
@@ -102,6 +108,7 @@ class App extends Component {
                       <Form
                         formType={"Register"}
                         formData={this.state.formData}
+                        handleUserFormSubmit={this.handleUserFormSubmit}
                       />
                     )}
                   />
@@ -109,7 +116,11 @@ class App extends Component {
                     exact
                     path="/login"
                     render={() => (
-                      <Form formType={"Login"} formData={this.state.formData} />
+                      <Form
+                        formType={"Login"}
+                        formData={this.state.formData}
+                        handleUserFormSubmit={this.handleUserFormSubmit}
+                      />
                     )}
                   />
                 </Switch>
