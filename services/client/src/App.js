@@ -13,11 +13,18 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.addUser = this.addUser.bind(this);
     this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
   }
 
   handleUserFormSubmit(e) {
     e.preventDefault();
     console.log("sanity check....");
+  }
+
+  handleFormChange(e) {
+    const obj = this.state.formData;
+    obj[e.target.name] = e.target.value;
+    this.setState(obj);
   }
 
   state = {
@@ -109,6 +116,7 @@ class App extends Component {
                         formType={"Register"}
                         formData={this.state.formData}
                         handleUserFormSubmit={this.handleUserFormSubmit}
+                        handleFormChange={this.handleFormChange}
                       />
                     )}
                   />
@@ -120,6 +128,7 @@ class App extends Component {
                         formType={"Login"}
                         formData={this.state.formData}
                         handleUserFormSubmit={this.handleUserFormSubmit}
+                        handleFormChange={this.handleFormChange}
                       />
                     )}
                   />
