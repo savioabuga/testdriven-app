@@ -5,6 +5,7 @@ import UserList from "./components/UserList";
 import AddUser from "./components/AddUser";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
+import Form from "./components/Form";
 
 class App extends Component {
   constructor(props) {
@@ -13,7 +14,17 @@ class App extends Component {
     this.addUser = this.addUser.bind(this);
   }
 
-  state = { users: [], username: "", email: "", title: "Testdriven.io" };
+  state = {
+    users: [],
+    username: "",
+    email: "",
+    title: "Testdriven.io",
+    formData: {
+      username: "",
+      email: "",
+      password: ""
+    }
+  };
 
   componentDidMount() {
     this.getUsers();
@@ -84,6 +95,23 @@ class App extends Component {
                     )}
                   />
                   <Route exact path="/about" component={About} />
+                  <Route
+                    exact
+                    path="/register"
+                    render={() => (
+                      <Form
+                        formType={"Register"}
+                        formData={this.state.formData}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/login"
+                    render={() => (
+                      <Form formType={"Login"} formData={this.state.formData} />
+                    )}
+                  />
                 </Switch>
               </div>
             </div>
