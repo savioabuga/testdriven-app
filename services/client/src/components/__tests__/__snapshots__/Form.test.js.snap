@@ -29,7 +29,7 @@ exports[`Login Form renders a snapshot properly 1`] = `
       <input
         className="input is-medium"
         name="password"
-        placeholder="Enter an email address"
+        placeholder="Password"
         type="password"
         value=""
       />
@@ -59,6 +59,7 @@ exports[`Register Form renders a snapshot properly 1`] = `
       className="field"
     >
       <input
+        className="input is-medium"
         name="username"
         placeholder="Enter a username"
         required={true}
@@ -83,7 +84,7 @@ exports[`Register Form renders a snapshot properly 1`] = `
       <input
         className="input is-medium"
         name="password"
-        placeholder="Enter an email address"
+        placeholder="Password"
         type="password"
         value=""
       />

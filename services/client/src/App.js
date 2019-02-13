@@ -6,6 +6,7 @@ import AddUser from "./components/AddUser";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
 import Form from "./components/Form";
+import Logout from "./components/Logout";
 
 class App extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class App extends Component {
     this.addUser = this.addUser.bind(this);
     this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
   }
 
   handleUserFormSubmit(e) {
@@ -54,6 +56,11 @@ class App extends Component {
       username: "",
       email: ""
     });
+  }
+
+  logoutUser() {
+    window.localStorage.clear();
+    this.setState({ isAuthenticated: false });
   }
 
   state = {
@@ -160,6 +167,16 @@ class App extends Component {
                         formData={this.state.formData}
                         handleUserFormSubmit={this.handleUserFormSubmit}
                         handleFormChange={this.handleFormChange}
+                        isAuthenticated={this.state.isAuthenticated}
+                      />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/logout"
+                    render={() => (
+                      <Logout
+                        logoutUser={this.logoutUser}
                         isAuthenticated={this.state.isAuthenticated}
                       />
                     )}
