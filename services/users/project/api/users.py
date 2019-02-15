@@ -26,7 +26,8 @@ def ping_pong():
 
 
 @users_blueprint.route("/users", methods=["POST"])
-def add_user():
+@authenticate
+def add_user(resp):
     post_data = request.get_json()
     response_object = {"status": "fail", "message": "Invalid payload."}
     if not post_data:
