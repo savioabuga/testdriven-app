@@ -232,7 +232,7 @@ class TestAuthBlueprint(BaseTestCase):
             )
             data = json.loads(response.data.decode())
             self.assertTrue(data["status"] == "fail")
-            self.assertTrue(data["message"] == "Provide a valid auth token")
+            self.assertTrue(data["message"] == "Provide a valid auth token.")
             self.assertEqual(response.status_code, 401)
 
 
