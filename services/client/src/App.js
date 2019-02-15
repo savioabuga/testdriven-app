@@ -131,22 +131,7 @@ class App extends Component {
                   <Route
                     exact
                     path="/"
-                    render={() => (
-                      <div>
-                        <h1 className="title is-1">All Users</h1>
-                        <hr />
-                        <br />
-                        <AddUser
-                          username={this.state.username}
-                          email={this.state.email}
-                          addUser={this.addUser}
-                          handleChange={this.handleChange}
-                        />
-                        <br />
-                        <br />
-                        <UserList users={this.state.users} />
-                      </div>
-                    )}
+                    render={() => <UserList users={this.state.users} />}
                   />
                   <Route exact path="/about" component={About} />
                   <Route

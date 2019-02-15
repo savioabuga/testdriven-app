@@ -22,6 +22,7 @@ const users = [
 test("UserList renders properly", () => {
   const wrapper = shallow(<UserList users={users} />);
   const element = wrapper.find("h4");
+  expect(wrapper.find("h1").get(0).props.children).toBe("All Users");
   expect(element.get(0).props.children).toBe("michael");
 });
 
