@@ -2,7 +2,7 @@ import json
 import unittest
 from project.tests.base import BaseTestCase
 from project.api.models import User
-from project.tests.utils import add_user
+from project.tests.utils import add_user, add_admin
 from project import db
 
 
@@ -15,7 +15,9 @@ class TestUserTestCase(BaseTestCase):
         self.assertIn("success", data["status"])
 
     def test_add_user(self):
-        add_user("test", "test@test.com", "test")
+        user = add_user("test", "test@test.com", "test")
+        user.admin = True
+        db.session.commit()
         resp_login = self.client.post(
             "/auth/login",
             data=json.dumps({"email": "test@test.com", "password": "test"}),
@@ -37,7 +39,7 @@ class TestUserTestCase(BaseTestCase):
 
     def test_add_user_invalid_json(self):
         """Missing email and username should raise Invalid data"""
-        add_user("test", "test@test.com", "test")
+        add_admin("test", "test@test.com", "test")
         with self.client:
             resp_login = self.client.post(
                 "/auth/login",
@@ -58,7 +60,7 @@ class TestUserTestCase(BaseTestCase):
 
     def test_add_user_invalid_json_keys(self):
         """Test that there should be a failure if there is a missing `email` key"""
-        add_user("test", "test@test.com", "test")
+        add_admin("test", "test@test.com", "test")
         with self.client:
             resp_login = self.client.post(
                 "/auth/login",
@@ -79,7 +81,7 @@ class TestUserTestCase(BaseTestCase):
 
     def test_add_user_duplicate_email(self):
         """Ensure error is thrown if the email already exists."""
-        add_user("test", "test@test.com", "test")
+        add_admin("test", "test@test.com", "test")
         with self.client:
             resp_login = self.client.post(
                 "/auth/login",
@@ -117,7 +119,7 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("fail", data["status"])
 
     def test_single_user(self):
-        user = add_user(
+        user = add_admin(
             username="savio", email="savioabuga@gmail.com", password="samsung"
         )
         with self.client:
@@ -189,7 +191,7 @@ class TestUserTestCase(BaseTestCase):
 
     def test_add_user_invalid_json_keys_no_password(self):
         """Ensure that error is thrown if there is no password in JSON key"""
-        add_user("test", "test@test.com", "test")
+        add_admin("test", "test@test.com", "test")
         with self.client:
             resp_login = self.client.post(
                 "/auth/login",
@@ -225,7 +227,7 @@ class TestUserTestCase(BaseTestCase):
             )
             data = json.loads(response.data.decode())
             self.assertEqual(response.status_code, 401)
-            self.assertTemplateUsed(data["message"] == 'You do not have permission to do that.')
+            self.assertTrue(data["message"] == "You do not have permission to do that.")
             self.assertIn("fail", data["status"])
 
 
