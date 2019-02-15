@@ -13,6 +13,7 @@ class User(db.Model):
     active = db.Column(db.Boolean, default=True, nullable=False)
     created = db.Column(db.DateTime, default=func.now(), nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    admin = db.Column(db.Boolean, default=False, nullable=True)
 
     def __init__(self, username, email, password):
         self.username = username
