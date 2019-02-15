@@ -208,6 +208,26 @@ class TestUserTestCase(BaseTestCase):
             self.assertIn("Invalid payload", data["message"])
             self.assertIn("fail", data["status"])
 
+    def test_add_user_not_admin(self):
+        add_user("test", "test@test.com", "test")
+        with self.client:
+            resp_login = self.client.post(
+                "/auth/login",
+                data=json.dumps({"email": "test@test.com", "password": "test"}),
+                content_type="application/json",
+            )
+            token = json.loads(resp_login.data.decode())["auth_token"]
+            response = self.client.post(
+                "/users",
+                data=json.dumps({"username": "savio", "email": "savio@andel.com"}),
+                content_type="application/json",
+                headers={"Authorization": f"Bearer {token}"},
+            )
+            data = json.loads(response.data.decode())
+            self.assertEqual(response.status_code, 401)
+            self.assertTemplateUsed(data["message"] == 'You do not have permission to do that.')
+            self.assertIn("fail", data["status"])
+
 
 if __name__ == "__main__":
     unittest.main()
