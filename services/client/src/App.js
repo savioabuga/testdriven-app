@@ -12,96 +12,23 @@ import UserStatus from "./components/UserStatus";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.addUser = this.addUser.bind(this);
-    this.handleUserFormSubmit = this.handleUserFormSubmit.bind(this);
-    this.handleFormChange = this.handleFormChange.bind(this);
-    this.logoutUser = this.logoutUser.bind(this);
-  }
-
-  handleUserFormSubmit(e) {
-    e.preventDefault();
-    const formType = window.location.href.split("/").reverse()[0];
-    const data = {
-      email: this.state.formData.email,
-      password: this.state.formData.password
+    this.state = {
+      users: [],
+      title: "Testdriven.io",
+      isAuthenticated: false
     };
-
-    if (formType === "register") {
-      data.username = this.state.formData.username;
-    }
-
-    const url = `${process.env.REACT_APP_USERS_SERVICE_URL}/auth/${formType}`;
-    axios
-      .post(url, data)
-      .then(res => {
-        this.clearFormState();
-        window.localStorage.setItem("authToken", res.data.auth_token);
-        this.setState({ isAuthenticated: true });
-        this.getUsers();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.logoutUser = this.logoutUser.bind(this);
+    this.loginUser = this.loginUser.bind(this);
   }
-
-  handleFormChange(e) {
-    const obj = this.state.formData;
-    obj[e.target.name] = e.target.value;
-    this.setState(obj);
-  }
-
-  clearFormState() {
-    this.setState({
-      formData: { username: "", email: "", password: "" },
-      username: "",
-      email: ""
-    });
-  }
-
-  logoutUser() {
-    window.localStorage.clear();
-    this.setState({ isAuthenticated: false });
-  }
-
-  state = {
-    users: [],
-    username: "",
-    email: "",
-    title: "Testdriven.io",
-    formData: {
-      username: "",
-      email: "",
-      password: ""
-    },
-    isAuthenticated: false
-  };
 
   componentDidMount() {
     this.getUsers();
   }
 
-  addUser(e) {
-    e.preventDefault();
-
-    const data = {
-      username: this.state.username,
-      email: this.state.email
-    };
-
-    axios
-      .post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
-      .then(res => {
-        this.getUsers();
-        this.setState({ username: "", email: "" });
-      })
-      .catch(err => console.log(err));
-  }
-
-  handleChange(e) {
-    const obj = {};
-    obj[e.target.name] = e.target.value;
-    this.setState(obj);
+  componentWillMount() {
+    if (window.localStorage.getItem("authToken")) {
+      this.setState({ isAuthenticated: true });
+    }
   }
 
   getUsers() {
@@ -113,6 +40,17 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  logoutUser() {
+    window.localStorage.clear();
+    this.setState({ isAuthenticated: false });
+  }
+
+  loginUser(token) {
+    window.localStorage.setItem("authToken", token);
+    this.setState({ isAuthenticated: true });
+    this.getUsers();
   }
 
   render() {
@@ -153,10 +91,8 @@ class App extends Component {
                     render={() => (
                       <Form
                         formType={"Login"}
-                        formData={this.state.formData}
-                        handleUserFormSubmit={this.handleUserFormSubmit}
-                        handleFormChange={this.handleFormChange}
                         isAuthenticated={this.state.isAuthenticated}
+                        loginUser={this.loginUser}
                       />
                     )}
                   />
