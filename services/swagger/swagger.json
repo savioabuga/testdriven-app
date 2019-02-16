@@ -139,17 +139,18 @@
         "requestBody": {
           "description": "User to add",
           "required": "true",
-          "content":{
+          "content": {
             "application/json": {
-              "schema":{
+              "schema": {
                 "$ref": "#/components/schemas/user-full"
               }
             }
           }
         },
-        "security":[{
-          "beearerAuth": []
-        }],
+        "security": [
+            "beearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "User added"
