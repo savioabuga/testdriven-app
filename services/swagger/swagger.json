@@ -62,23 +62,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "required": [
-                  "username",
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "username": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/component/schemas/user-full"
               }
             }
           }
@@ -99,6 +83,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "$ref": "#/component/schemas/user"
               }
             }
           }
@@ -112,6 +97,30 @@
     }
   },
   "components": {
-    "schemas": {}
+    "schemas": {
+      "user": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type":"string"
+          }
+        }
+      },
+      "user-full": {
+        "properties": {
+          "username": {
+            "type":"string"
+          },
+          "email": {
+            "type":"string"
+          },
+          "password": {
+            "type":"string"
+          }
+        }
+      }
+    }
   }
 }
