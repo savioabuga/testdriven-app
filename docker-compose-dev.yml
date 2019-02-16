@@ -56,7 +56,7 @@ services:
       context: ./services/swagger
       dockerfile: Dockerfile-dev
     volumes:
-      - "./services/swagger/swagger.json:/usr/nginx/html/swagger.json"
+      - "./services/swagger/swagger.json:/usr/share/nginx/html/swagger.json"
     ports:
       - 3008:8080
     environment:
