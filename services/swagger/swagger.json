@@ -124,6 +124,38 @@
           }
         }
       }
+    },
+    "users": {
+      "get": {
+        "summary": "Returns all users",
+        "responses": {
+          "200": {
+            "description": "user object"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new user",
+        "requestBody": {
+          "description": "User to add",
+          "required": "true",
+          "content":{
+            "application/json": {
+              "schema":{
+                "$ref": "#/components/schemas/user-full"
+              }
+            }
+          }
+        },
+        "security":[{
+          "beearerAuth": []
+        }],
+        "responses": {
+          "200": {
+            "description": "User added"
+          }
+        }
+      }
     }
   },
   "components": {
