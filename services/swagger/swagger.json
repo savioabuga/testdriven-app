@@ -86,24 +86,24 @@
         }
       }
     },
-  "/auth/login": {
-    "post": {
-      "summary": "Logs a user in",
-      "requestBody": {
-        "description": "User to log in",
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {}
+    "/auth/login": {
+      "post": {
+        "summary": "Logs a user in",
+        "requestBody": {
+          "description": "User to log in",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
           }
         }
+      },
+      "responses": {
+        "200": {
+          "description": "Successfully logged in"
+        }
       }
-    },
-    "responses": {
-      "200": {
-        "description": "Successfully logged in"
-      }
-    }
     }
   },
   "components": {
