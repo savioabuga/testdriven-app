@@ -104,20 +104,20 @@
             "type": "string"
           },
           "password": {
-            "type":"string"
+            "type": "string"
           }
         }
       },
       "user-full": {
         "properties": {
           "username": {
-            "type":"string"
+            "type": "string"
           },
           "email": {
-            "type":"string"
+            "type": "string"
           },
           "password": {
-            "type":"string"
+            "type": "string"
           }
         }
       }
