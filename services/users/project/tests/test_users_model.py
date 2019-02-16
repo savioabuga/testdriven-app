@@ -8,13 +8,6 @@ from project.tests.base import BaseTestCase
 
 
 class TestUserModel(BaseTestCase):
-    def test_add_user(self):
-        user = add_user(username="justatest", email="test@test.com", password="samsung")
-        self.assertTrue(user.id)
-        self.assertEqual(user.username, "justatest")
-        self.assertEqual(user.email, "test@test.com")
-        self.assertTrue(user.active)
-
     def test_adding_duplicate_username(self):
         add_user(username="justatest", email="test@test.com", password="samsung")
         duplicate_user = User(

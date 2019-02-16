@@ -1,7 +1,6 @@
 import json
 import unittest
 from project.tests.base import BaseTestCase
-from project.api.models import User
 from project.tests.utils import add_user, add_admin
 from project import db
 
