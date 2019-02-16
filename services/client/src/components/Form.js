@@ -41,15 +41,17 @@ class Form extends Component {
       password: this.state.formData.password
     };
 
-    if (formType === "register") {
+    if (formType === "Register") {
       data.username = this.state.formData.username;
     }
 
-    const url = `${process.env.REACT_APP_USERS_SERVICE_URL}/auth/${formType}`;
+    const url = `${
+      process.env.REACT_APP_USERS_SERVICE_URL
+    }/auth/${formType.toLowerCase()}`;
     axios
       .post(url, data)
       .then(res => {
-        this.clearFormState();
+        this.clearForm();
         this.props.loginUser(res.data.auth_token);
       })
       .catch(err => {
@@ -61,7 +63,7 @@ class Form extends Component {
     const obj = this.state.formData;
     obj[e.target.name] = e.target.value;
     this.setState(obj);
-    this.validateForm();
+    // this.validateForm();
   }
   render() {
     if (this.props.isAuthenticated) {
@@ -115,7 +117,6 @@ class Form extends Component {
             type="submit"
             value="Submit"
             className="button is-primary is-medium is-fullwidth"
-            disabled={this.state.valid}
           />
         </form>
       </div>
