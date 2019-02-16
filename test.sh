@@ -70,7 +70,7 @@ fi
 if [ -n "${fails}" ]; then
     echo "Tests failed: ${fails}"
     exit 1
-else:
+else
     echo "Tests passes"
     exit 0
 fi
