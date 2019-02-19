@@ -5,6 +5,17 @@ services:
 
 env:
   DOCKER_COMPOSE_VERSION: 1.23.2
+  COMMIT: ${TRAVIS_COMMIT::8}
+  MAIN_REPO: https://github.com/savioabugah/testdriven-app.git
+  USERS: test-driven-users
+  USERS_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/users
+  USERS_DB: test-drive-users_db
+  USERS_DB_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/users/project/db
+  CLIENT: test-driven-client
+  CLIENT_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/client
+  SWAGGER: test-driven-swagger
+  SWAGGER_REPO: ${MAIN_REPO}#${TRAVIS_BRANCH}:services/swagger
+  SECRET_KEY: my_precious
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -13,11 +24,11 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 before_script:
-  - docker-compose -f docker-compose-dev.yml up --build -d
+  - export REACT_APP_USERS_SERVICE_URL=http://127.0.0.1
+  - npm install
 
 script:
-  - docker-compose -f docker-compose-dev.yml exec users python manage.py test
-  - docker-compose -f docker-compose-dev.yml exec users flake8 project
+  - bash test.sh stage
 
 after_script:
-  - docker-compose -f docker-compose-dev.yml down
+  - bash ./docker-push.sh
