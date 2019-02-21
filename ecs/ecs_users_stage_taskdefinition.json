@@ -30,9 +30,7 @@
           "value": "my_precious"
         }
       ],
-      "links": [
-        "users-db"
-      ],
+      "links": ["users-db"],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
