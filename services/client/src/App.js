@@ -81,6 +81,7 @@ class App extends Component {
                         handleUserFormSubmit={this.handleUserFormSubmit}
                         handleFormChange={this.handleFormChange}
                         isAuthenticated={this.state.isAuthenticated}
+                        loginUser={this.loginUser}
                       />
                     )}
                   />
