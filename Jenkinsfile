@@ -13,11 +13,7 @@ pipeline {
         }
         stage('Tests') {
             steps {
-                sh 'docker-compose -f docker-compose-dev.yml up -d --build'
-                sh 'docker ps'
-                sh 'docker-compose -f docker-compose-dev.yml exec ${BUILD_TAG}_users flake8 project'
-                sh 'docker-compose -f docker-compose-dev.yml exec ${BUILD_TAG}_client npm test -- --coverage'
-                sh 'docker-compose -f docker-compose-dev.yml down'
+                sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
             }
         }
     }
