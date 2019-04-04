@@ -41,20 +41,6 @@ services:
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - users
-  e2e_tests:
-    build:
-      context: ./services/client
-      dockerfile: Dockerfile-dev
-    command: "./node_modules/.bin/cypress run --config baseUrl=http://localhost"
-    volumes:
-      - "./services/client:/usr/src/app"
-      - "/usr/src/app/node_modules"
-    environment:
-      - NODE_ENV=development
-      - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
-      - CHOKIDAR_USEPOLLING=true
-    depends_on:
-      - users
 
   users:
     build:

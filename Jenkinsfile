@@ -38,7 +38,8 @@ pipeline {
         }
         stage('e2e Tests') {
             steps {
-                sh 'docker-compose -f docker-compose-ci.yml up --build e2e_tests'
+                sh 'docker-compose -f docker-compose-ci.yml up --build'
+                sh './node_modules/.bin/cypress run --config baseUrl=http://localhost'
             }
             post {
                 cleanup {
