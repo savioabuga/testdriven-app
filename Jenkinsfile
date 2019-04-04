@@ -38,7 +38,8 @@ pipeline {
         }
         stage('Docker Push') {
             steps {
-                sh 'bash docker-push.sh'
+                sh 'chmod 775 ./docker-push.sh'
+                sh './docker-push.sh'
             }
         }
     }
