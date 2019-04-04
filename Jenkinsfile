@@ -36,5 +36,15 @@ pipeline {
                 }
             }
         }
+        stage('e2e Tests') {
+            steps {
+                sh 'docker-compose -f docker-compose-ci.yml up --build e2e_tests'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
     }
 }
