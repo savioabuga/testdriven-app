@@ -36,15 +36,9 @@ pipeline {
                 }
             }
         }
-        stage('e2e Tests') {
+        stage('Docker Push') {
             steps {
-                sh 'docker-compose -f docker-compose-ci.yml up -d --build'
-                sh './node_modules/.bin/cypress run --config baseUrl=http://localhost'
-            }
-            post {
-                cleanup {
-                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-                }
+                sh './docker-push.sh'
             }
         }
     }
