@@ -1,16 +1,21 @@
 #!/bin/sh
-if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]
+
+echo $CHANGE_ID
+echo $JOB_NAME
+echo $GIT_COMMIT
+
+if [ -z "$CHANGE_ID" ]
 then
 
-  if [[ "$TRAVIS_BRANCH" == "staging" ]]; then
+  if [[ "$GIT_BRANCH" == "staging" ]]; then
     export DOCKER_ENV=stage
     export REACT_APP_USERS_SERVICE_URL="testdriven-staging-alb-806588837.us-west-1.elb.amazonaws.com"
-  elif [[ "$TRAVIS_BRANCH" == "production" ]]; then
+  elif [[ "$GIT_BRANCH" == "production" ]]; then
     export DOCKER_ENV=prod
   fi
 
-  if [ "$TRAVIS_BRANCH" == "staging" ] || \
-     [ "$TRAVIS_BRANCH" == "production" ]
+  if [ "$GIT_BRANCH" == "staging" ] || \
+     [ "$GIT_BRANCH" == "production" ]
   then
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
     unzip awscli-bundle.zip
@@ -18,12 +23,12 @@ then
     export PATH=~/bin:$PATH
     # add AWS_ACCOUNT_ID, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY env vars
     eval $(aws ecr get-login --region us-west-1 --no-include-email)
-    export TAG=$TRAVIS_BRANCH
+    export TAG=$GIT_BRANCH
     export REPO=$AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com
   fi
 
-  if [ "$TRAVIS_BRANCH" == "staging" ] || \
-     [ "$TRAVIS_BRANCH" == "production" ]
+  if [ "$GIT_BRANCH" == "staging" ] || \
+     [ "$GIT_BRANCH" == "production" ]
   then
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV

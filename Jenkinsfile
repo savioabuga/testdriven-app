@@ -38,8 +38,8 @@ pipeline {
         // }
         stage('Docker Push') {
             steps {
-                sh 'chmod 775 ./docker-push.sh'
-                sh './docker-push.sh'
+                sh 'chmod 775 ./docker-push-jenkins.sh'
+                sh './docker-push-jenkins.sh'
             }
         }
     }
