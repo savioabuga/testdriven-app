@@ -1,5 +1,9 @@
 #!/bin/sh
 
+echo $CHANGE_ID
+echo $JOB_NAME
+echo $GIT_COMMIT
+
 if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]
 then
 
