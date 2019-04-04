@@ -2,7 +2,7 @@
 
 echo $CHANGE_ID
 echo $JOB_NAME
-echo $GIT_BRANCH
+echo $BRANCH_NAME
 
 if [ -z "$CHANGE_ID" ]
 then
