@@ -12,7 +12,7 @@ pipeline {
             }
             post {
                 cleanup {
-                    h 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
                 }
             }
         }
