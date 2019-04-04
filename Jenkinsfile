@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Docker Push') {
             steps {
-                sh './docker-push.sh'
+                sh 'bash docker-push.sh'
             }
         }
     }
