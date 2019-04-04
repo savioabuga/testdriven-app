@@ -26,5 +26,15 @@ pipeline {
                 }
             }
         }
+        stage('Client Tests') {
+            steps {
+                sh 'docker-compose -f docker-compose-ci.yml up --build client_tests'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
     }
 }

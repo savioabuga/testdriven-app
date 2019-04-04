@@ -27,6 +27,20 @@ services:
       - SECRET_KEY=my_precious
     depends_on:
       - users
+  client_tests:
+    build:
+      context: ./services/client
+      dockerfile: Dockerfile-dev
+    command: 'npm test -- --coverage'
+    volumes:
+      - "./services/client:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - users
   users:
     build:
       context: ./services/users
