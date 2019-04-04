@@ -31,7 +31,7 @@ services:
     build:
       context: ./services/client
       dockerfile: Dockerfile-dev
-    command: 'npm test -- --coverage'
+    command: "npm test -- --coverage"
     volumes:
       - "./services/client:/usr/src/app"
       - "/usr/src/app/node_modules"
