@@ -14,7 +14,7 @@ then
     export DOCKER_ENV=prod
   fi
 
-  if [ "$GIT_BRANCH" == "staging" ] || \
+  if [ "$GIT_BRANCH" == "master" ] || \
      [ "$GIT_BRANCH" == "production" ]
   then
     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
