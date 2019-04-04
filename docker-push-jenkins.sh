@@ -2,7 +2,7 @@
 
 echo $CHANGE_ID
 echo $JOB_NAME
-echo $GIT_COMMIT
+echo $GIT_BRANCH
 
 if [ -z "$CHANGE_ID" ]
 then
@@ -27,7 +27,7 @@ then
     export REPO=$AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com
   fi
 
-  if [ "$GIT_BRANCH" == "staging" ] || \
+  if [ "$GIT_BRANCH" == "master" ] || \
      [ "$GIT_BRANCH" == "production" ]
   then
     # users
