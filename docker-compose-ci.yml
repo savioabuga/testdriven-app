@@ -6,10 +6,6 @@ services:
       context: ./services/users
       dockerfile: Dockerfile-dev
     command: "python manage.py test"
-    volumes:
-      - "./services/users:/usr/src/app"
-    ports:
-      - 5001:5000
     environment:
       - FLASK_APP=project/__init__.py
       - APP_SETTINGS=project.config.DevelopmentConfig
