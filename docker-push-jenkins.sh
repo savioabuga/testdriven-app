@@ -27,7 +27,7 @@ then
     export REPO=$AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com
   fi
 
-  if [ "$GIT_BRANCH" == "master" ] || \
+  if [ "$GIT_BRANCH" == "origin/master" ] || \
      [ "$GIT_BRANCH" == "production" ]
   then
     # users
