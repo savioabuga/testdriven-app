@@ -13,8 +13,8 @@ then
     export DOCKER_ENV=prod
   fi
 
-  if [ "$GIT_BRANCH" == "origin/master" ] || \
-     [ "$GIT_BRANCH" == "production" ]
+  if [ "$BRANCH" == "master" ] || \
+     [ "$BRANCH" == "production" ]
   then
     # curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
     # unzip awscli-bundle.zip
@@ -26,8 +26,8 @@ then
     export REPO=$AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com
   fi
 
-  if [ "$GIT_BRANCH" == "origin/master" ] || \
-     [ "$GIT_BRANCH" == "production" ]
+  if [ "$BRANCH" == "master" ] || \
+     [ "$BRANCH" == "production" ]
   then
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
