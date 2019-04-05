@@ -3,7 +3,19 @@ pipeline {
         dockerfile true
     }
     environment {
-        COMPOSE_PROJECT_NAME = "${BUILD_TAG}"
+        COMPOSE_PROJECT_NAME = '${BUILD_TAG}'
+        COMMIT = '${GIT_COMMIT}'
+        BRANCH = '${GIT_BRANCH#*/}'
+        MAIN_REPO = 'https://github.com/savioabugah/testdriven-app.git'
+        USERS = 'test-driven-users'
+        USERS_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/users'
+        USERS_DB = 'test-driven-users_db'
+        USERS_DB_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/users/project/db'
+        CLIENT = 'test-driven-client'
+        CLIENT_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/client'
+        SWAGGER = 'test-driven-swagger'
+        SWAGGER_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/swagger'
+        SECRET_KEY = 'my_precious'
     }
     stages {
         // stage('Tests') {

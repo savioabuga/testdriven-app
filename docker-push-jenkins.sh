@@ -1,9 +1,5 @@
 #!/bin/sh
 
-echo $CHANGE_ID
-echo $JOB_NAME
-echo $GIT_LOCAL_BRANCH
-
 if [ -z "$CHANGE_ID" ]
 then
 
