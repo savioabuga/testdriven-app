@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo $BRANCH
+echo $COMMIT
+
 if [ -z "$CHANGE_ID" ]
 then
 
