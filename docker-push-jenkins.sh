@@ -29,10 +29,12 @@ then
   if [ "$BRANCH" == "master" ] || \
      [ "$BRANCH" == "production" ]
   then
+    echo 'Building users'
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
     docker push $REPO/$USERS:$TAG
+    echo 'Done building user'
     # users db
     docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
     docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
