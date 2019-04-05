@@ -1,5 +1,6 @@
 FROM docker:dind
 RUN apk add -U --no-cache \
+    curl \
     git \
     py3-pip \
     musl-dev \
