@@ -5,7 +5,7 @@ pipeline {
     environment {
         COMPOSE_PROJECT_NAME = "${BUILD_TAG}"
         COMMIT = "${GIT_COMMIT}"
-        BRANCH = sh(script: 'echo ${GIT_BRANCH#*/}', returnStdout: true)
+        BRANCH = sh(script: 'echo ${GIT_BRANCH#*/}', returnStdout: true).trim()
         MAIN_REPO = 'https://github.com/savioabugah/testdriven-app.git'
         USERS = 'test-driven-users'
         USERS_REPO = '${MAIN_REPO}#${BRANCH}:services/users'
