@@ -3,9 +3,9 @@ pipeline {
         dockerfile true
     }
     environment {
-        COMPOSE_PROJECT_NAME = '${BUILD_TAG}'
-        COMMIT = ${GIT_COMMIT}
-        BRANCH = sh(script: '${GIT_BRANCH#*/}', returnStdout: true)
+        COMPOSE_PROJECT_NAME = "${BUILD_TAG}"
+        COMMIT = "${GIT_COMMIT}"
+        BRANCH = sh(script: 'echo ${GIT_BRANCH#*/}', returnStdout: true)
         MAIN_REPO = 'https://github.com/savioabugah/testdriven-app.git'
         USERS = 'test-driven-users'
         USERS_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/users'
