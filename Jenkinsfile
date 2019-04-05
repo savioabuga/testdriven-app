@@ -8,13 +8,13 @@ pipeline {
         BRANCH = sh(script: 'echo ${GIT_BRANCH#*/}', returnStdout: true)
         MAIN_REPO = 'https://github.com/savioabugah/testdriven-app.git'
         USERS = 'test-driven-users'
-        USERS_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/users'
+        USERS_REPO = '${MAIN_REPO}#${BRANCH}:services/users'
         USERS_DB = 'test-driven-users_db'
-        USERS_DB_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/users/project/db'
+        USERS_DB_REPO = '${MAIN_REPO}#${BRANCH}:services/users/project/db'
         CLIENT = 'test-driven-client'
-        CLIENT_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/client'
+        CLIENT_REPO = '${MAIN_REPO}#${BRANCH}:services/client'
         SWAGGER = 'test-driven-swagger'
-        SWAGGER_REPO = '${MAIN_REPO}#${GIT_BRANCH#*/}:services/swagger'
+        SWAGGER_REPO = '${MAIN_REPO}#${BRANCH}:services/swagger'
         SECRET_KEY = 'my_precious'
     }
     stages {
