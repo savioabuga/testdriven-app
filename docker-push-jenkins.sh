@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo $BRANCH
+echo $BRANCH == "master"
 echo $COMMIT
 
 if [ -z "$CHANGE_ID" ]
