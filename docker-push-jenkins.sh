@@ -21,8 +21,7 @@ then
     # ./awscli-bundle/install -b ~/bin/aws
     # export PATH=~/bin:$PATH
     # add AWS_ACCOUNT_ID, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY env vars
-    mkdir ./docker
-    touch ./docker/config
+    touch /.docker/config.json.
     eval $(aws ecr get-login --region us-west-1 --no-include-email)
     export TAG=$BRANCH
     export REPO=$AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com
