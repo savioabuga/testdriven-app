@@ -32,6 +32,7 @@ then
     echo 'Building users'
     echo "$PWD"
     echo "$USER"
+    mkdir test
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
