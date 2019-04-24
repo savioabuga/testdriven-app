@@ -30,8 +30,8 @@ then
      [ "$BRANCH" == "production" ]
   then
     echo 'Building users'
-    echo $PWD
-    echo "$USER
+    echo "$PWD"
+    echo "$USER"
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
