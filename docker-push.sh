@@ -26,6 +26,8 @@ then
   if [ "$TRAVIS_BRANCH" == "staging" ] || \
      [ "$TRAVIS_BRANCH" == "production" ]
   then
+    echo whoami
+    echo pwd
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
