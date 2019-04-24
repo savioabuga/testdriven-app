@@ -21,7 +21,9 @@ then
     # ./awscli-bundle/install -b ~/bin/aws
     # export PATH=~/bin:$PATH
     # add AWS_ACCOUNT_ID, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY env vars
-    eval $(sudo aws ecr get-login --region us-west-1 --no-include-email)
+    mkdir ./docker
+    touch ./docker/config
+    eval $(aws ecr get-login --region us-west-1 --no-include-email)
     export TAG=$BRANCH
     export REPO=$AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com
   fi
@@ -32,7 +34,7 @@ then
     echo 'Building users'
     echo "$PWD"
     echo "$USER"
-    mkdir test
+
     # users
     docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
     docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
