@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        dockerfile {
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+        dockerfile true
     }
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
