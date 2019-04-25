@@ -48,10 +48,27 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Docker Push') {
+        // stage('Docker Push') {
+        //     steps {
+        //         sh 'chmod 775 ./docker-push-jenkins.sh'
+        //         sh './docker-push-jenkins.sh'
+        //     }
+        // }
+        stage('Push Image') {
+            when {
+                anyOf {
+                    branch "develop"
+                    branch "master"
+                }
+            }
             steps {
-                sh 'chmod 775 ./docker-push-jenkins.sh'
-                sh './docker-push-jenkins.sh'
+                echo 'Login into Elastic Container Registry'
+                sh 'set +x; eval $(aws ecr get-login --no-include-email)'
+
+                echo 'Uploading images'
+                sh '''
+                docker-compose push
+                '''
             }
         }
     }
