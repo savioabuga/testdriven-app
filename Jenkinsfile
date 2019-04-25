@@ -16,6 +16,8 @@ pipeline {
         SWAGGER = 'test-driven-swagger'
         SWAGGER_REPO = "${MAIN_REPO}#${BRANCH}:services/swagger"
         SECRET_KEY = 'my_precious'
+        DOCKER_ENV = 'stage'
+        REACT_APP_USERS_SERVICE_URL = 'testdriven-staging-alb-806588837.us-west-1.elb.amazonaws.com'
     }
     stages {
         // stage('Tests') {
@@ -63,12 +65,14 @@ pipeline {
             // }
             steps {
                 echo 'Login into Elastic Container Registry'
-                sh 'set +x; eval $(aws ecr get-login --no-include-email)'
+                sh 'set +x; eval $(aws ecr get-login --region us-west-1 --no-include-email)'
 
                 echo 'Uploading images'
-                sh '''
-                docker-compose push
-                '''
+                sh """
+                docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
+                docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
+                docker push $REPO/$USERS:$TAG
+                """
             }
         }
     }
