@@ -5,6 +5,8 @@ pipeline {
         }
     }
     environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         COMPOSE_PROJECT_NAME = "${BUILD_TAG}"
         COMMIT = "${GIT_COMMIT}"
         BRANCH = sh(script: 'echo ${GIT_BRANCH#*/}', returnStdout: true).trim()
