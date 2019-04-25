@@ -1,6 +1,8 @@
 pipeline {
     agent {
-        dockerfile true
+        dockerfile {
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
     }
     environment {
         COMPOSE_PROJECT_NAME = "${BUILD_TAG}"
