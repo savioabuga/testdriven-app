@@ -55,12 +55,12 @@ pipeline {
         //     }
         // }
         stage('Push Image') {
-            when {
-                anyOf {
-                    branch "develop"
-                    branch "master"
-                }
-            }
+            // when {
+            //     anyOf {
+            //         branch "develop"
+            //         branch "master"
+            //     }
+            // }
             steps {
                 echo 'Login into Elastic Container Registry'
                 sh 'set +x; eval $(aws ecr get-login --no-include-email)'
