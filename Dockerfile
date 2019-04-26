@@ -11,8 +11,9 @@ RUN apk add -U --no-cache \
     py3-pynacl \
     neovim \
     openssh-client \
-    mdocml-apropos
-
+    mdocml-apropos \
+    nodejs \
+    npm
 
 RUN pip3 install awscli docker-compose
 
