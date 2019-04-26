@@ -25,6 +25,10 @@ pipeline {
         REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-west-1.amazonaws.com"
     }
     stages {
+        stage('Configure') {
+            sh 'npm install'
+        }
+
         stage('Tests') {
             steps {
                 sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
@@ -55,29 +59,37 @@ pipeline {
                 }
             }
         }
-        stage('Docker Push') {
-            steps {
-                sh 'chmod 775 ./docker-push-jenkins.sh'
-                sh './docker-push-jenkins.sh'
+        stage('Push Images') {
+            when {
+                anyOf {
+                    branch "production"
+                    branch "staging"
+                }
             }
-        }
-        stage('Push Image') {
-            // when {
-            //     anyOf {
-            //         branch "develop"
-            //         branch "master"
-            //     }
-            // }
             steps {
                 echo 'Login into Elastic Container Registry'
                 sh 'set +x; eval $(aws ecr get-login --region us-west-1 --no-include-email)'
 
-                echo 'Uploading images'
+                echo 'Building and uploading Users Image'
                 sh """
                 docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
                 docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
                 docker push $REPO/$USERS:$TAG
                 """
+
+                // echo 'Building and pushing '
+                // docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
+                // docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
+                // docker push $REPO/$USERS_DB:$TAG
+                // # client
+                // docker build $CLIENT_REPO -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV --build-arg REACT_APP_USERS_SERVICE_URL=$REACT_APP_USERS_SERVICE_URL
+                // docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
+                // docker push $REPO/$CLIENT:$TAG
+                // # swagger
+                // docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV
+                // docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG
+                // docker push $REPO/$SWAGGER:$TAG
+
             }
         }
     }
