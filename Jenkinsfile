@@ -25,42 +25,42 @@ pipeline {
         REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-west-1.amazonaws.com"
     }
     stages {
-        // stage('Tests') {
-        //     steps {
-        //         sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
-        //     }
-        //     post {
-        //         cleanup {
-        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-        //         }
-        //     }
-        // }
-        // stage('Flake8') {
-        //     steps {
-        //         sh 'docker-compose -f docker-compose-ci.yml up --build flake8'
-        //     }
-        //     post {
-        //         cleanup {
-        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-        //         }
-        //     }
-        // }
-        // stage('Client Tests') {
-        //     steps {
-        //         sh 'docker-compose -f docker-compose-ci.yml up --build client_tests'
-        //     }
-        //     post {
-        //         cleanup {
-        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-        //         }
-        //     }
-        // }
-        // stage('Docker Push') {
-        //     steps {
-        //         sh 'chmod 775 ./docker-push-jenkins.sh'
-        //         sh './docker-push-jenkins.sh'
-        //     }
-        // }
+        stage('Tests') {
+            steps {
+                sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
+        stage('Flake8') {
+            steps {
+                sh 'docker-compose -f docker-compose-ci.yml up --build flake8'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
+        stage('Client Tests') {
+            steps {
+                sh 'docker-compose -f docker-compose-ci.yml up --build client_tests'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                sh 'chmod 775 ./docker-push-jenkins.sh'
+                sh './docker-push-jenkins.sh'
+            }
+        }
         stage('Push Image') {
             // when {
             //     anyOf {
