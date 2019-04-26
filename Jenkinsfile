@@ -21,7 +21,7 @@ pipeline {
         SECRET_KEY = 'my_precious'
         DOCKER_ENV = 'stage'
         REACT_APP_USERS_SERVICE_URL = 'testdriven-staging-alb-806588837.us-west-1.elb.amazonaws.com'
-        TAG=$BRANCH
+        TAG="${BRANCH}"
         REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-west-1.amazonaws.com"
     }
     stages {
