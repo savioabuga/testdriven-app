@@ -5,6 +5,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_ACCOUNT_ID=credentials('AWS_ACCOUNT_ID')
         COMPOSE_PROJECT_NAME = "${BUILD_TAG}"
         COMMIT = "${GIT_COMMIT}"
         BRANCH = sh(script: 'echo ${GIT_BRANCH#*/}', returnStdout: true).trim()
@@ -20,6 +21,8 @@ pipeline {
         SECRET_KEY = 'my_precious'
         DOCKER_ENV = 'stage'
         REACT_APP_USERS_SERVICE_URL = 'testdriven-staging-alb-806588837.us-west-1.elb.amazonaws.com'
+        TAG=$BRANCH
+        REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-west-1.amazonaws.com"
     }
     stages {
         // stage('Tests') {
