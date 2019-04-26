@@ -26,7 +26,9 @@ pipeline {
     }
     stages {
         stage('Configure') {
-            sh 'npm install'
+            steps {
+                sh 'npm install'
+            }
         }
 
         stage('Tests') {
