@@ -1,6 +1,15 @@
 version: "3.6"
 
 services:
+  users-db:
+    build:
+      context: ./services/users/project/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
   users_tests:
     build:
       context: ./services/users
@@ -59,15 +68,7 @@ services:
       - SECRET_KEY=my_precious
     depends_on:
       - users-db
-  users-db:
-    build:
-      context: ./services/users/project/db
-      dockerfile: Dockerfile
-    ports:
-      - 5435:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+
   nginx:
     build:
       context: ./services/nginx

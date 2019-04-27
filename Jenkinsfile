@@ -32,15 +32,17 @@ pipeline {
 
         }
 
-        stage('Configure') {
-            steps {
-                sh 'npm install'
-            }
-        }
+        // stage('Configure') {
+        //     steps {
+        //         sh 'npm install'
+        //     }
+        // }
 
         stage('Tests') {
             steps {
-                sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
+                //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
+                sh 'docker-compose -f docker-compose-dev.yml up -d --build'
+                sh 'docker-compose -f docker-compose-dev.yml exec users python manage.py test'
             }
             post {
                 cleanup {
@@ -48,66 +50,66 @@ pipeline {
                 }
             }
         }
-        stage('Flake8') {
-            steps {
-                sh 'docker-compose -f docker-compose-ci.yml up --build flake8'
-            }
-            post {
-                cleanup {
-                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-                }
-            }
-        }
-        stage('Client Tests') {
-            steps {
-                sh 'docker-compose -f docker-compose-ci.yml up --build client_tests'
-            }
-            post {
-                cleanup {
-                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-                }
-            }
-        }
-        stage('Push Images') {
-            // when {
-            //     anyOf {
-            //         branch "production"
-            //         branch "staging"
-            //     }
-            // }
-            steps {
-                echo 'Login into Elastic Container Registry'
-                sh 'set +x; eval $(aws ecr get-login --region us-west-1 --no-include-email)'
+        // stage('Flake8') {
+        //     steps {
+        //         sh 'docker-compose -f docker-compose-ci.yml up --build flake8'
+        //     }
+        //     post {
+        //         cleanup {
+        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+        //         }
+        //     }
+        // }
+        // stage('Client Tests') {
+        //     steps {
+        //         sh 'docker-compose -f docker-compose-ci.yml up --build client_tests'
+        //     }
+        //     post {
+        //         cleanup {
+        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+        //         }
+        //     }
+        // }
+        // stage('Push Images') {
+        //     // when {
+        //     //     anyOf {
+        //     //         branch "production"
+        //     //         branch "staging"
+        //     //     }
+        //     // }
+        //     steps {
+        //         echo 'Login into Elastic Container Registry'
+        //         sh 'set +x; eval $(aws ecr get-login --region us-west-1 --no-include-email)'
 
-                echo 'Building and uploading Users Image'
-                sh """
-                docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
-                docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
-                docker push $REPO/$USERS:$TAG
-                """
+        //         echo 'Building and uploading Users Image'
+        //         sh """
+        //         docker build $USERS_REPO -t $USERS:$COMMIT -f Dockerfile-$DOCKER_ENV
+        //         docker tag $USERS:$COMMIT $REPO/$USERS:$TAG
+        //         docker push $REPO/$USERS:$TAG
+        //         """
 
-                echo 'Building and pushing  User DB Image'
-                sh """
-                docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
-                docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
-                docker push $REPO/$USERS_DB:$TAG
-                """
+        //         echo 'Building and pushing  User DB Image'
+        //         sh """
+        //         docker build $USERS_DB_REPO -t $USERS_DB:$COMMIT -f Dockerfile
+        //         docker tag $USERS_DB:$COMMIT $REPO/$USERS_DB:$TAG
+        //         docker push $REPO/$USERS_DB:$TAG
+        //         """
 
-                echo "Building and pushing Client Image"
-                sh """
-                docker build $CLIENT_REPO -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV --build-arg REACT_APP_USERS_SERVICE_URL=$REACT_APP_USERS_SERVICE_URL
-                docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
-                docker push $REPO/$CLIENT:$TAG
-                """
+        //         echo "Building and pushing Client Image"
+        //         sh """
+        //         docker build $CLIENT_REPO -t $CLIENT:$COMMIT -f Dockerfile-$DOCKER_ENV --build-arg REACT_APP_USERS_SERVICE_URL=$REACT_APP_USERS_SERVICE_URL
+        //         docker tag $CLIENT:$COMMIT $REPO/$CLIENT:$TAG
+        //         docker push $REPO/$CLIENT:$TAG
+        //         """
 
-                echo "Building and pushing Swagger"
-                sh """
-                docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV
-                docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG
-                docker push $REPO/$SWAGGER:$TAG
-                """
+        //         echo "Building and pushing Swagger"
+        //         sh """
+        //         docker build $SWAGGER_REPO -t $SWAGGER:$COMMIT -f Dockerfile-$DOCKER_ENV
+        //         docker tag $SWAGGER:$COMMIT $REPO/$SWAGGER:$TAG
+        //         docker push $REPO/$SWAGGER:$TAG
+        //         """
 
-            }
+        //     }
         }
     }
 }
