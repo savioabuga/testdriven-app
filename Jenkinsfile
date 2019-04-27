@@ -43,21 +43,23 @@ pipeline {
             }
         }
 
-        parallel {
-            stage('Tests') {
-                steps {
-                    //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
-                    sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
+        stage('tests') {
+            parallel {
+                stage('Tests') {
+                    steps {
+                        //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
+                        sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
+                    }
                 }
-            }
-            stage('Flake8') {
-                steps {
-                    sh 'docker-compose -f docker-compose-dev.yml exec -T users flake8 project'
+                stage('Flake8') {
+                    steps {
+                        sh 'docker-compose -f docker-compose-dev.yml exec -T users flake8 project'
+                    }
                 }
-            }
-            stage('Client Tests') {
-                steps {
-                    sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
+                stage('Client Tests') {
+                    steps {
+                        sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
+                    }
                 }
             }
         }
