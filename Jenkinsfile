@@ -59,11 +59,12 @@ pipeline {
                 sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
             }
         }
-        post {
-            cleanup {
-                sh 'docker-compose -f docker-compose-dev.yml down --rmi local -v'
+        stage('Stop Docker') {
+            steps {
+                sh 'docker-compose -f docker-compose-dev.yml down'
             }
         }
+
         // stage('Push Images') {
         //     // when {
         //     //     anyOf {
@@ -105,5 +106,10 @@ pipeline {
 
         //     }
 
+    }
+    post {
+        cleanup {
+            sh 'docker-compose -f docker-compose-dev.yml down --rmi local -v'
+        }
     }
 }
