@@ -49,7 +49,7 @@ pipeline {
                     sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
                 }
             }
-        }
+
         // stage('Flake8') {
         //     steps {
         //         sh 'docker-compose -f docker-compose-ci.yml up --build flake8'
