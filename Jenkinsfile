@@ -27,8 +27,7 @@ pipeline {
     stages {
         stage('Learning groovy') {
             steps {
-                echo env
-
+                echo sh(script: 'env|sort', returnStdout: true)
             }
         }
 
