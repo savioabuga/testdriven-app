@@ -48,30 +48,20 @@ pipeline {
                 //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
                 sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
             }
-            post {
-                cleanup {
-                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-                }
-            }
         }
         stage('Flake8') {
             steps {
                 sh 'docker-compose -f docker-compose-dev.yml exec -T users flake8 project'
-            }
-            post {
-                cleanup {
-                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-                }
             }
         }
         stage('Client Tests') {
             steps {
                 sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
             }
-            post {
-                cleanup {
-                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-                }
+        }
+        post {
+            cleanup {
+                sh 'docker-compose -f docker-compose-dev.yml down --rmi local -v'
             }
         }
         // stage('Push Images') {
