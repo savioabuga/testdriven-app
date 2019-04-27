@@ -14,7 +14,7 @@ services:
       - SECRET_KEY=my_precious
     depends_on:
       - users-db
-      - users
+
   flake8:
     build:
       context: ./services/users
