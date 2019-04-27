@@ -37,11 +37,15 @@ pipeline {
         //         sh 'npm install'
         //     }
         // }
+        stage('Build') {
+            steps {
+                sh 'docker-compose -f docker-compose-dev.yml up -d --build'
+            }
+        }
 
         stage('Tests') {
             steps {
                 //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
-                sh 'docker-compose -f docker-compose-dev.yml up -d --build'
                 sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
             }
             post {
@@ -50,26 +54,26 @@ pipeline {
                 }
             }
 
-        // stage('Flake8') {
-        //     steps {
-        //         sh 'docker-compose -f docker-compose-ci.yml up --build flake8'
-        //     }
-        //     post {
-        //         cleanup {
-        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-        //         }
-        //     }
-        // }
-        // stage('Client Tests') {
-        //     steps {
-        //         sh 'docker-compose -f docker-compose-ci.yml up --build client_tests'
-        //     }
-        //     post {
-        //         cleanup {
-        //             sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
-        //         }
-        //     }
-        // }
+        stage('Flake8') {
+            steps {
+                sh 'docker-compose -f docker-compose-dev.yml exec -T users flake8 project'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
+        stage('Client Tests') {
+            steps {
+                sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
+            }
+            post {
+                cleanup {
+                    sh 'docker-compose -f docker-compose-ci.yml down --rmi local -v'
+                }
+            }
+        }
         // stage('Push Images') {
         //     // when {
         //     //     anyOf {
