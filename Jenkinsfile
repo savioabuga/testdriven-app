@@ -37,28 +37,31 @@ pipeline {
         //         sh 'npm install'
         //     }
         // }
-        stage('Build') {
+        stage('Build and run docker') {
             steps {
                 sh 'docker-compose -f docker-compose-dev.yml up -d --build'
             }
         }
 
-        stage('Tests') {
-            steps {
-                //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
-                sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
+        parallel {
+            stage('Tests') {
+                steps {
+                    //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
+                    sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
+                }
+            }
+            stage('Flake8') {
+                steps {
+                    sh 'docker-compose -f docker-compose-dev.yml exec -T users flake8 project'
+                }
+            }
+            stage('Client Tests') {
+                steps {
+                    sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
+                }
             }
         }
-        stage('Flake8') {
-            steps {
-                sh 'docker-compose -f docker-compose-dev.yml exec -T users flake8 project'
-            }
-        }
-        stage('Client Tests') {
-            steps {
-                sh 'docker-compose -f docker-compose-dev.yml exec -T client npm test -- --coverage'
-            }
-        }
+
         stage('Stop Docker') {
             steps {
                 sh 'docker-compose -f docker-compose-dev.yml down'
@@ -106,10 +109,5 @@ pipeline {
 
         //     }
 
-    }
-    post {
-        cleanup {
-            sh 'docker-compose -f docker-compose-dev.yml down --rmi local -v'
-        }
     }
 }
