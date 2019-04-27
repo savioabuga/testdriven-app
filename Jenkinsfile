@@ -23,12 +23,18 @@ pipeline {
         REACT_APP_USERS_SERVICE_URL = 'testdriven-staging-alb-806588837.us-west-1.elb.amazonaws.com'
         TAG="${BRANCH}"
         REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-west-1.amazonaws.com"
+        if (env.BRANCH == 'master') {
+            DOCKER_ENV = 'prod'
+        } else {
+            DOCKER_ENV = 'stage'
+        }
     }
     stages {
         stage('Learning groovy') {
             steps {
                 echo sh(script: 'env|sort', returnStdout: true)
             }
+
         }
 
         // stage('Configure') {
