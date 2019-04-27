@@ -27,7 +27,7 @@ pipeline {
     stages {
         stage('Learning groovy') {
             steps {
-                echo env.BRANCH_NAME
+                echo env
 
             }
         }
