@@ -40,7 +40,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh 'docker-compose -f docker-compose-ci.yml up --exit-code-from --build users_tests'
+                sh 'docker-compose -f docker-compose-ci.yml up --build --exit-code-from users_tests'
             }
             post {
                 cleanup {
