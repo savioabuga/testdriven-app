@@ -42,7 +42,7 @@ pipeline {
             steps {
                 //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
                 sh 'docker-compose -f docker-compose-dev.yml up -d --build'
-                sh 'docker-compose -f docker-compose-dev.yml exec users python manage.py test'
+                sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
             }
             post {
                 cleanup {
