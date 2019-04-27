@@ -10,7 +10,7 @@ class TestUserTestCase(BaseTestCase):
         response = self.client.get("/users/ping")
         data = json.loads(response.data.decode())
         self.assert200(response)
-        self.assertIn("pong", data["message"])
+        self.assertIn("pong!", data["message"])
         self.assertIn("success", data["status"])
 
     def test_add_user(self):
