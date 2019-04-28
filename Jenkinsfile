@@ -64,11 +64,6 @@ pipeline {
             }
         }
 
-        stage('Stop Docker') {
-            steps {
-                sh 'docker-compose -f docker-compose-dev.yml down'
-            }
-        }
 
         stage('Push Images') {
             // when {
@@ -110,6 +105,11 @@ pipeline {
                 """
 
             }
+        }
+    }
+    post {
+        cleanup {
+            sh 'docker-compose -f docker-compose-dev.yml down'
         }
     }
 }
