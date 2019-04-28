@@ -47,7 +47,6 @@ pipeline {
             parallel {
                 stage('Tests') {
                     steps {
-                        //sh 'docker-compose -f docker-compose-ci.yml up --build users_tests'
                         sh 'docker-compose -f docker-compose-dev.yml exec -T users python manage.py test'
                     }
                 }
@@ -109,7 +108,7 @@ pipeline {
     }
     post {
         cleanup {
-            sh 'docker-compose -f docker-compose-dev.yml down'
+            sh 'docker-compose -f docker-compose-dev.yml down --rmi local -v'
         }
     }
 }
