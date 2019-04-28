@@ -22,8 +22,7 @@ def index():
 
 @users_blueprint.route("/users/ping", methods=["GET"])
 def ping_pong():
-    return jsonify({"message": "pong!",
-                "status": "success"})
+    return jsonify({"message": "pong!", "status": "success"})
 
 
 @users_blueprint.route("/users", methods=["POST"])
