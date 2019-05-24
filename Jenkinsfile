@@ -32,11 +32,6 @@ pipeline {
 
         }
 
-        // stage('Configure') {
-        //     steps {
-        //         sh 'npm install'
-        //     }
-        // }
         stage('Build and run docker') {
             steps {
                 sh 'docker-compose -f docker-compose-dev.yml up -d --build'
@@ -65,12 +60,12 @@ pipeline {
 
 
         stage('Push Images') {
-            // when {
-            //     anyOf {
-            //         branch "production"
-            //         branch "staging"
-            //     }
-            // }
+            when {
+                anyOf {
+                    branch "production"
+                    branch "staging"
+                }
+            }
             steps {
                 echo 'Login into Elastic Container Registry'
                 sh 'set +x; eval $(aws ecr get-login --region us-west-1 --no-include-email)'
